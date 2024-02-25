@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Making Tool</title>
+    <style>
+        /* Styling for input fields and buttons */
+        input[type="text"],
+        textarea {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-top: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Styling for preview area */
+        #preview {
+            width: calc(100% - 20px);
+            height: 300px;
+            border: 1px solid #ccc;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Styling for generated HTML code area */
+        #htmlCode {
+            width: calc(100% - 20px);
+            height: 200px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            background-color: #f9f9f9;
+        }
+    </style>
+</head>
+<body>
+    <h1>Website Making Tool</h1>
+    <h2>codetestgroup.github.io/WebsiteMaker</h2>
+<p>
+    A simple website making tool! Your website <span style="color: red;">WILL NOT</span> be saved if you exit or reload the page!
+</p>
+    <hr>
+    <!-- Input fields for customization options -->
+    <h3>Website Title:</h3>
+    <input type="text" id="title" placeholder="Enter title"><br>
+
+    <label for="titleColor">Title Color:</label>
+    <input type="color" id="titleColor" value="#000000" onchange="updateColorPreview('titleColorPreview', this.value)"><br>
+
+
+    <h3>Text:</h3>
+    <textarea id="bio" rows="4" cols="50" placeholder="Enter text"></textarea><br>
+
+    <label for="bioColor">Text Color:</label>
+    <input type="color" id="bioColor" value="#000000" onchange="updateColorPreview('bioColorPreview', this.value)"><br>
+
+
+    <label for="bgColor">Background Color:</label>
+    <input type="color" id="bgColor" value="#ffffff" onchange="updateColorPreview('bgColorPreview', this.value)"><br>
+
+
+    <!-- Button to generate HTML code -->
+    <button onclick="generateHTML()">Generate HTML Code</button>
+<hr>
+    <h3>Website Preview:</h3>
+    <!-- Preview area -->
+    <iframe id="preview"></iframe>
+<hr>
+    <h3>Generated Code:</h3>
+    <!-- Generated HTML code area -->
+    <textarea id="htmlCode"></textarea><br>
+
+    <!-- Button to copy generated HTML code -->
+    <button onclick="copyCode()">Copy Generated Code</button>
+
+    <script>
+        function updateColorPreview(previewId, color) {
+            document.getElementById(previewId).innerText = color.toUpperCase();
+        }
+
+        function generateHTML() {
+            // Get values from input fields
+            var title = document.getElementById("title").value;
+            var titleColor = document.getElementById("titleColor").value;
+            var bio = document.getElementById("bio").value;
+            var bioColor = document.getElementById("bioColor").value;
+            var bgColor = document.getElementById("bgColor").value;
+
+            // Construct URL with query parameters
+            var url = `preview.html?title=${encodeURIComponent(title)}&bio=${encodeURIComponent(bio)}&titlecolor=${encodeURIComponent(titleColor)}&biocolor=${encodeURIComponent(bioColor)}&bgcolor=${encodeURIComponent(bgColor)}`;
+
+            // Set iframe source to the constructed URL
+            document.getElementById("preview").src = url;
+
+            // Generate HTML code
+            var htmlCode = `
+                <!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                    <title>${title}</title>
+                      <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: ${bgColor};
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        h1 {
+            color: ${titleColor};
+        }
+
+        p {
+            color: ${bioColor};
+        }
+    </style>
+                </head>
+                <body>
+                 <div class="container">
+                    <h1>${title}</h1>
+                    <div>
+                        <p>${bio}</p>
+                    </div>
+                  </div>
+                </body>
+                </html>
+            `;
+
+            // Display generated HTML code
+            document.getElementById("htmlCode").value = htmlCode;
+        }
+
+        function copyCode() {
+            // Select the text area
+            var codeArea = document.getElementById("htmlCode");
+            codeArea.select();
+
+            // Copy the text inside the text area
+            document.execCommand("copy");
+
+            // Deselect the text area
+            codeArea.setSelectionRange(0, 0);
+
+        }
+    </script>
+</body>
+</html>
